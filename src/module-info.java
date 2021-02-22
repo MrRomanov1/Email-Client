@@ -6,5 +6,6 @@ module EmailClient {
 
     opens pl.piotr_romanczak;
     opens pl.piotr_romanczak.view;
+    opens pl.piotr_romanczak.controller;
 
 }
