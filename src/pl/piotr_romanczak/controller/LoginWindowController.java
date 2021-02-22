@@ -1,4 +1,4 @@
-package pl.piotr_romanczak.view;
+package pl.piotr_romanczak.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
