@@ -14,7 +14,7 @@
       <Label layoutX="112.0" layoutY="135.0" prefHeight="17.0" prefWidth="72.0" text="Font size" />
       <Label layoutX="112.0" layoutY="172.0" prefHeight="17.0" prefWidth="72.0" text="Theme color:" />
       <Label layoutX="262.0" layoutY="27.0" prefHeight="17.0" prefWidth="72.0" text="Options" />
-      <Button layoutX="184.0" layoutY="253.0" mnemonicParsing="false" onAction="#CancelButtonAction" text="Cancel" />
-      <Button layoutX="349.0" layoutY="253.0" mnemonicParsing="false" onAction="#ApplyButtonAction" text="Apply" />
+      <Button layoutX="184.0" layoutY="253.0" mnemonicParsing="false" onAction="#cancelButtonAction" text="Cancel" />
+      <Button layoutX="349.0" layoutY="253.0" mnemonicParsing="false" onAction="#applyButtonAction" text="Apply" />
    </children>
 </AnchorPane>
