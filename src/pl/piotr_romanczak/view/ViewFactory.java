@@ -25,6 +25,7 @@ public class ViewFactory {
     }
 
     private ColorTheme colorTheme = ColorTheme.DEFAULT;
+    private FontSize fontSize = FontSize.MEDIUM;
 
     public void setColorTheme(ColorTheme colorTheme) {
         this.colorTheme = colorTheme;
@@ -42,17 +43,12 @@ public class ViewFactory {
         return fontSize;
     }
 
-    private FontSize fontSize = FontSize.MEDIUM;
-
     public void showLoginWindow() {
-        System.out.println("show login window");
-
         BaseController controller = new LoginWindowController(emailManager, this, "LoginWindow.fxml");
         initializeStage(controller);
     }
 
     public void showMainWindow() {
-        System.out.println("show main window");
         BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
         initializeStage(controller);
     }
@@ -75,7 +71,6 @@ public class ViewFactory {
     }
 
     public void showOptionsWindow() {
-        System.out.println("Options window");
         BaseController controller = new OptionsWindowController(emailManager, this, "OptionsWindow.fxml");
         initializeStage(controller);
     }
@@ -88,7 +83,9 @@ public class ViewFactory {
     public void updateStyles() {
         for (Stage stage : activeStages) {
             Scene scene = stage.getScene();
-            // css will go here
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource(ColorTheme.getCssPath(colorTheme)).toExternalForm());
+            scene.getStylesheets().add(getClass().getResource(FontSize.getCssPath(fontSize)).toExternalForm());
         }
     }
 }
