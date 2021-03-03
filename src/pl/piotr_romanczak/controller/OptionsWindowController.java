@@ -14,7 +14,6 @@ import pl.piotr_romanczak.view.ViewFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Stack;
 
 public class OptionsWindowController extends BaseController implements Initializable {
 
@@ -32,9 +31,7 @@ public class OptionsWindowController extends BaseController implements Initializ
     @FXML
     void applyButtonAction() {
         viewFactory.setColorTheme(themePicker.getValue());
-        viewFactory.setFontSize(FontSize.values()[(int)(fontSizePicker.getValue())]);
-        System.out.println(viewFactory.getColorTheme());
-        System.out.println(viewFactory.getFontSize());
+        viewFactory.setFontSize(FontSize.values()[(int) (fontSizePicker.getValue())]);
         viewFactory.updateStyles();
     }
 
