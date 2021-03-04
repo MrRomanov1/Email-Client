@@ -31,6 +31,7 @@ public class LoginService extends Service<EmailLoginResult> {
                     emailAccount.getAddress(),
                     emailAccount.getPassword());
             emailAccount.setStore(store);
+            emailManager.addEmailAccount(emailAccount);
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
             return EmailLoginResult.FAILED_BY_UNEXPECTED_ERROR;
