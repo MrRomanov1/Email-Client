@@ -1,12 +1,14 @@
 package pl.piotr_romanczak.controller.services;
 
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import pl.piotr_romanczak.EmailManager;
 import pl.piotr_romanczak.controller.EmailLoginResult;
 import pl.piotr_romanczak.model.EmailAccount;
 
 import javax.mail.*;
 
-public class LoginService {
+public class LoginService extends Service<EmailLoginResult> {
     EmailAccount emailAccount;
     EmailManager emailManager;
 
@@ -15,7 +17,7 @@ public class LoginService {
         this.emailManager = emailManager;
     }
 
-    public EmailLoginResult login() {
+    private EmailLoginResult login() {
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -43,5 +45,15 @@ public class LoginService {
             return EmailLoginResult.FAILED_BY_UNEXPECTED_ERROR;
         }
         return EmailLoginResult.SUCCESS;
+    }
+
+    @Override
+    protected Task<EmailLoginResult> createTask() {
+        return new Task<EmailLoginResult>() {
+            @Override
+            protected EmailLoginResult call() throws Exception {
+                return login();
+            }
+        };
     }
 }
