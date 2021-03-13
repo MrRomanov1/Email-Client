@@ -10,8 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import pl.piotr_romanczak.EmailManager;
+import pl.piotr_romanczak.controller.services.MessageRendererService;
 import pl.piotr_romanczak.model.EmailMessage;
 import pl.piotr_romanczak.model.EmailTreeItem;
+import pl.piotr_romanczak.model.SizeInteger;
 import pl.piotr_romanczak.view.ViewFactory;
 
 import java.net.URL;
@@ -36,7 +38,7 @@ public class MainWindowController extends BaseController implements Initializabl
     private TableColumn<EmailMessage, String> recipientCol;
 
     @FXML
-    private TableColumn<EmailMessage, Integer> sizeCol;
+    private TableColumn<EmailMessage, SizeInteger> sizeCol;
 
     @FXML
     private TableColumn<EmailMessage, Date> dateCol;
@@ -44,6 +46,8 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @FXML
     private WebView emailWebView;
+
+    private MessageRendererService messageRendererService;
 
     public MainWindowController(EmailManager emailManager, ViewFactory viewFactory, String fxmlName) {
         super(emailManager, viewFactory, fxmlName);
@@ -65,6 +69,22 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpEmailsTableView();
         setUpFolderSelection();
         setUpBoldRows();
+        setUpMessageRendererService();
+        setUpMessageSelection();
+    }
+
+    private void setUpMessageSelection() {
+        emailsTableView.setOnMouseClicked(event -> {
+            EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
+            if (emailMessage != null) {
+                messageRendererService.setEmailMessage(emailMessage);
+                messageRendererService.restart();
+            }
+        });
+    }
+
+    private void setUpMessageRendererService() {
+       messageRendererService = new MessageRendererService(emailWebView.getEngine());
     }
 
     private void setUpBoldRows() {
@@ -101,7 +121,7 @@ public class MainWindowController extends BaseController implements Initializabl
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("sender"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("subject"));
         recipientCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("recipient"));
-        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, Integer>("size"));
+        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, SizeInteger>("size"));
         dateCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, Date>("date"));
     }
 
