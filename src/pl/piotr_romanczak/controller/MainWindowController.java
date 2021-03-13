@@ -3,10 +3,12 @@ package pl.piotr_romanczak.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
 import pl.piotr_romanczak.EmailManager;
 import pl.piotr_romanczak.model.EmailMessage;
 import pl.piotr_romanczak.model.EmailTreeItem;
@@ -62,6 +64,28 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpEmailsTreeView();
         setUpEmailsTableView();
         setUpFolderSelection();
+        setUpBoldRows();
+    }
+
+    private void setUpBoldRows() {
+        emailsTableView.setRowFactory(new Callback<TableView<EmailMessage>, TableRow<EmailMessage>>() {
+            @Override
+            public TableRow<EmailMessage> call(TableView<EmailMessage> param) {
+                return new TableRow<EmailMessage>(){
+                    @Override
+                    protected void updateItem(EmailMessage item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null) {
+                            if (item.isRead()) {
+                                setStyle("");
+                            } else {
+                                setStyle("-fx-font-weight: bold;");
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void setUpFolderSelection() {
