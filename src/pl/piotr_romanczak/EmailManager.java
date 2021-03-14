@@ -7,6 +7,7 @@ import pl.piotr_romanczak.controller.services.FolderUpdaterService;
 import pl.piotr_romanczak.model.EmailAccount;
 import pl.piotr_romanczak.model.EmailMessage;
 import pl.piotr_romanczak.model.EmailTreeItem;
+import pl.piotr_romanczak.view.IconResolver;
 
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -18,6 +19,7 @@ public class EmailManager {
     private EmailMessage selectedMessage;
     private EmailTreeItem<String> selectedFolder;
     private ObservableList<EmailAccount> emailsAccounts = FXCollections.observableArrayList();
+    private IconResolver iconResolver = new IconResolver();
 
     public ObservableList<EmailAccount> getEmailAccounts() {
         return emailsAccounts;
@@ -60,6 +62,7 @@ public class EmailManager {
     public void addEmailAccount(EmailAccount emailAccount){
         emailsAccounts.add(emailAccount);
         EmailTreeItem<String> treeItem = new EmailTreeItem<String>(emailAccount.getAddress());
+        treeItem.setGraphic(iconResolver.getIconForFolder(emailAccount.getAddress()));
         FetchFoldersService fetchFoldersService = new FetchFoldersService(emailAccount.getStore(), treeItem, folderList);
         fetchFoldersService.start();
         foldersRoot.getChildren().add(treeItem);
