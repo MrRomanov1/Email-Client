@@ -1,5 +1,7 @@
 package pl.piotr_romanczak;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import pl.piotr_romanczak.controller.services.FetchFoldersService;
 import pl.piotr_romanczak.controller.services.FolderUpdaterService;
 import pl.piotr_romanczak.model.EmailAccount;
@@ -15,6 +17,11 @@ public class EmailManager {
 
     private EmailMessage selectedMessage;
     private EmailTreeItem<String> selectedFolder;
+    private ObservableList<EmailAccount> emailsAccounts = FXCollections.observableArrayList();
+
+    public ObservableList<EmailAccount> getEmailAccounts() {
+        return emailsAccounts;
+    }
 
     public EmailMessage getSelectedMessage() {
         return selectedMessage;
@@ -51,6 +58,7 @@ public class EmailManager {
     }
 
     public void addEmailAccount(EmailAccount emailAccount){
+        emailsAccounts.add(emailAccount);
         EmailTreeItem<String> treeItem = new EmailTreeItem<String>(emailAccount.getAddress());
         FetchFoldersService fetchFoldersService = new FetchFoldersService(emailAccount.getStore(), treeItem, folderList);
         fetchFoldersService.start();

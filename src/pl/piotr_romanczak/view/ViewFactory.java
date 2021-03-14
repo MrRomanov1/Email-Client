@@ -6,10 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.piotr_romanczak.EmailManager;
-import pl.piotr_romanczak.controller.BaseController;
-import pl.piotr_romanczak.controller.LoginWindowController;
-import pl.piotr_romanczak.controller.MainWindowController;
-import pl.piotr_romanczak.controller.OptionsWindowController;
+import pl.piotr_romanczak.controller.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,6 +75,11 @@ public class ViewFactory {
 
     public void showOptionsWindow() {
         BaseController controller = new OptionsWindowController(emailManager, this, "OptionsWindow.fxml");
+        initializeStage(controller);
+    }
+
+    public void showComposeMessageWindow() {
+        BaseController controller = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
         initializeStage(controller);
     }
 
