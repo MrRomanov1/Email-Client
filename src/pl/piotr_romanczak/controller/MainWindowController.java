@@ -43,7 +43,6 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     private TableColumn<EmailMessage, Date> dateCol;
 
-
     @FXML
     private WebView emailWebView;
 
@@ -57,7 +56,6 @@ public class MainWindowController extends BaseController implements Initializabl
     void optionsAction() {
         viewFactory.showOptionsWindow();
     }
-
     @FXML
     void addAccountAction() {
         viewFactory.showLoginWindow();
@@ -71,12 +69,17 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpBoldRows();
         setUpMessageRendererService();
         setUpMessageSelection();
+
     }
 
     private void setUpMessageSelection() {
         emailsTableView.setOnMouseClicked(event -> {
             EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
-            if (emailMessage != null) {
+            if(emailMessage != null){
+                emailManager.setSelectedMessage(emailMessage);
+                if(!emailMessage.isRead()){
+                    emailManager.setRead();
+                }
                 messageRendererService.setEmailMessage(emailMessage);
                 messageRendererService.restart();
             }
@@ -84,7 +87,7 @@ public class MainWindowController extends BaseController implements Initializabl
     }
 
     private void setUpMessageRendererService() {
-       messageRendererService = new MessageRendererService(emailWebView.getEngine());
+        messageRendererService = new MessageRendererService(emailWebView.getEngine());
     }
 
     private void setUpBoldRows() {
@@ -93,13 +96,13 @@ public class MainWindowController extends BaseController implements Initializabl
             public TableRow<EmailMessage> call(TableView<EmailMessage> param) {
                 return new TableRow<EmailMessage>(){
                     @Override
-                    protected void updateItem(EmailMessage item, boolean empty) {
+                    protected void updateItem(EmailMessage item, boolean empty){
                         super.updateItem(item, empty);
-                        if (item != null) {
-                            if (item.isRead()) {
+                        if(item != null) {
+                            if(item.isRead()){
                                 setStyle("");
                             } else {
-                                setStyle("-fx-font-weight: bold;");
+                                setStyle("-fx-font-weight: bold");
                             }
                         }
                     }
@@ -110,19 +113,20 @@ public class MainWindowController extends BaseController implements Initializabl
 
     private void setUpFolderSelection() {
         emailsTreeView.setOnMouseClicked(e->{
-            EmailTreeItem<String> item = (EmailTreeItem<String>) emailsTreeView.getSelectionModel().getSelectedItem();
+            EmailTreeItem<String> item = (EmailTreeItem<String>)emailsTreeView.getSelectionModel().getSelectedItem();
             if (item != null) {
+                emailManager.setSelectedFolder(item);
                 emailsTableView.setItems(item.getEmailMessages());
             }
         });
     }
 
     private void setUpEmailsTableView() {
-        senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("sender"));
-        subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("subject"));
-        recipientCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("recipient"));
-        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, SizeInteger>("size"));
-        dateCol.setCellValueFactory(new PropertyValueFactory<EmailMessage, Date>("date"));
+        senderCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, String>("sender")));
+        subjectCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, String>("subject")));
+        recipientCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, String>("recipient")));
+        sizeCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, SizeInteger>("size")));
+        dateCol.setCellValueFactory((new PropertyValueFactory<EmailMessage, Date>("date")));
     }
 
     private void setUpEmailsTreeView() {

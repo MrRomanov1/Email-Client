@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 public class EmailTreeItem<String> extends TreeItem<String> {
+
     private String name;
     private ObservableList<EmailMessage> emailMessages;
     private int unreadMessagesCount;
@@ -56,6 +57,11 @@ public class EmailTreeItem<String> extends TreeItem<String> {
         updateName();
     }
 
+    public void decrementMessagesCount() {
+        unreadMessagesCount--;
+        updateName();
+    }
+
     private void updateName() {
         if (unreadMessagesCount > 0) {
             this.setValue((String) (name + "(" + unreadMessagesCount + ")"));
@@ -63,6 +69,4 @@ public class EmailTreeItem<String> extends TreeItem<String> {
             this.setValue(name);
         }
     }
-
-
 }
