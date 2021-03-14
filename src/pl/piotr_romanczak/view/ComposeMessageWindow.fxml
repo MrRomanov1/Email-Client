@@ -13,10 +13,11 @@
       <Label layoutX="29.0" layoutY="85.0" text="Subject" />
       <TextField fx:id="recipientTextField" layoutX="98.0" layoutY="53.0" prefHeight="25.0" prefWidth="423.0" />
       <TextField fx:id="subjectTextField" layoutX="98.0" layoutY="81.0" prefHeight="25.0" prefWidth="423.0" />
-      <HTMLEditor fx:id="htmlEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="14.0" layoutY="130.0" prefHeight="359.0" prefWidth="508.0" />
+      <HTMLEditor fx:id="htmlEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="14.0" layoutY="178.0" prefHeight="446.0" prefWidth="667.0" />
       <Button layoutX="425.0" layoutY="498.0" mnemonicParsing="false" onAction="#sendButtonAction" prefHeight="25.0" prefWidth="88.0" text="Send" />
       <Label fx:id="errorLabel" layoutX="14.0" layoutY="501.0" prefHeight="17.0" prefWidth="351.0" />
       <Label layoutX="27.0" layoutY="29.0" text="Account" />
       <ChoiceBox fx:id="emailAccountChoice" layoutX="98.0" layoutY="25.0" prefHeight="25.0" prefWidth="423.0" />
+      <Button layoutX="14.0" layoutY="135.0" mnemonicParsing="false" onAction="#attachBtnAction" text="Attach:" />
    </children>
 </AnchorPane>

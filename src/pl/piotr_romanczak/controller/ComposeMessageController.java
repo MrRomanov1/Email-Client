@@ -2,7 +2,7 @@ package pl.piotr_romanczak.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,10 +13,15 @@ import pl.piotr_romanczak.controller.services.EmailSenderService;
 import pl.piotr_romanczak.model.EmailAccount;
 import pl.piotr_romanczak.view.ViewFactory;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ComposeMessageController extends BaseController implements Initializable {
+
+    private List<File> attachments = new ArrayList<File>();
 
     @FXML
     private TextField recipientTextField;
@@ -34,12 +39,22 @@ public class ComposeMessageController extends BaseController implements Initiali
     private ChoiceBox<EmailAccount> emailAccountChoice;
 
     @FXML
+    void attachBtnAction() {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if(selectedFile != null){
+            attachments.add(selectedFile);
+        }
+    }
+
+    @FXML
     void sendButtonAction() {
         EmailSenderService emailSenderService = new EmailSenderService(
                 emailAccountChoice.getValue(),
                 subjectTextField.getText(),
                 recipientTextField.getText(),
-                htmlEditor.getHtmlText()
+                htmlEditor.getHtmlText(),
+                attachments
         );
         emailSenderService.start();
         emailSenderService.setOnSucceeded(e-> {
