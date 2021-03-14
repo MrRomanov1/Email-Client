@@ -24,6 +24,7 @@ public class LoginService extends Service<EmailLoginResult> {
                 return new PasswordAuthentication(emailAccount.getAddress(), emailAccount.getPassword());
             }
         };
+
         try {
             Session session = Session.getInstance(emailAccount.getProperties(), authenticator);
             emailAccount.setSession(session);
@@ -35,7 +36,7 @@ public class LoginService extends Service<EmailLoginResult> {
             emailManager.addEmailAccount(emailAccount);
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
-            return EmailLoginResult.FAILED_BY_UNEXPECTED_ERROR;
+            return EmailLoginResult.FAILED_BY_NETWORK;
         } catch (AuthenticationFailedException e) {
             e.printStackTrace();
             return EmailLoginResult.FAILED_BY_CREDENTIALS;

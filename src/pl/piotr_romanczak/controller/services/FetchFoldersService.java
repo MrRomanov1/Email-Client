@@ -27,7 +27,7 @@ public class FetchFoldersService extends Service<Void> {
     }
 
     @Override
-    protected Task createTask() {
+    protected Task<Void> createTask() {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -47,15 +47,16 @@ public class FetchFoldersService extends Service<Void> {
             folderList.add(folder);
             EmailTreeItem<String> emailTreeItem = new EmailTreeItem<String>(folder.getName());
             emailTreeItem.setGraphic(iconResolver.getIconForFolder(folder.getName()));
-            foldersRoot.getChildren().add(emailTreeItem);
+            foldersRoot.getChildren().add((emailTreeItem));
             foldersRoot.setExpanded(true);
             fetchMessagesOnFolder(folder, emailTreeItem);
             addMessageListenerToFolder(folder, emailTreeItem);
-            if(folder.getType() == Folder.HOLDS_FOLDERS) {
+            if (folder.getType() == Folder.HOLDS_FOLDERS) {
                 Folder[] subFolders = folder.list();
                 handleFolders(subFolders, emailTreeItem);
             }
         }
+
     }
 
     private void addMessageListenerToFolder(Folder folder, EmailTreeItem<String> emailTreeItem) {
@@ -66,18 +67,17 @@ public class FetchFoldersService extends Service<Void> {
                     try {
                         Message message = folder.getMessage(folder.getMessageCount() - i);
                         emailTreeItem.addEmailToTop(message);
-                    } catch (MessagingException messagingException) {
-                        messagingException.printStackTrace();
+                    } catch (MessagingException ex) {
+                        ex.printStackTrace();
                     }
                 }
             }
 
             @Override
             public void messagesRemoved(MessageCountEvent e) {
-                System.out.println("message removed event" + e);
+                System.out.println("message removed event!!!: " + e);
             }
         });
-
     }
 
     private void fetchMessagesOnFolder(Folder folder, EmailTreeItem<String> emailTreeItem) {
@@ -90,14 +90,13 @@ public class FetchFoldersService extends Service<Void> {
                         if (folder.getType() != Folder.HOLDS_FOLDERS) {
                             folder.open(Folder.READ_WRITE);
                             int folderSize = folder.getMessageCount();
-                            for (int i = folderSize; i > 0; i --) {
+                            for (int i = folderSize; i > 0; i--) {
                                 emailTreeItem.addEmail(folder.getMessage(i));
                             }
                         }
                         return null;
                     }
                 };
-
             }
         };
         fetchMessagesService.start();

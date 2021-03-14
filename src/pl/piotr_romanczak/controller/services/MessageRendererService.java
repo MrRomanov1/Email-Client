@@ -20,7 +20,7 @@ public class MessageRendererService extends Service {
 
     public MessageRendererService(WebEngine webEngine) {
         this.webEngine = webEngine;
-        stringBuffer = new StringBuffer();
+        this.stringBuffer = new StringBuffer();
         this.setOnSucceeded(event -> {
             displayMessage();
         });
@@ -50,7 +50,7 @@ public class MessageRendererService extends Service {
     }
 
     private void loadMessage() throws MessagingException, IOException {
-        stringBuffer.setLength(0);
+        stringBuffer.setLength(0); //clears the SB
         Message message = emailMessage.getMessage();
         String contentType = message.getContentType();
         if (isSimpleType(contentType)) {
@@ -67,6 +67,9 @@ public class MessageRendererService extends Service {
             String contentType = bodyPart.getContentType();
             if (isSimpleType(contentType)) {
                 stringBuffer.append(bodyPart.getContent().toString());
+            } else if (isMultipartType(contentType)) {
+                Multipart multipart2 = (Multipart) bodyPart.getContent();
+                loadMultipart(multipart2, stringBuffer);
             } else if (!isTextPlain(contentType)) {
                 //here we get the attachments:
                 MimeBodyPart mbp = (MimeBodyPart) bodyPart;
@@ -75,10 +78,14 @@ public class MessageRendererService extends Service {
         }
     }
 
+    private boolean isTextPlain(String contentType) {
+        return contentType.contains("TEXT/PLAIN");
+    }
+
     private boolean isSimpleType(String contentType) {
         if (contentType.contains("TEXT/HTML") ||
-                contentType.contains("MIXED") ||
-                contentType.contains("TEXT")) {
+                contentType.contains("mixed") ||
+                contentType.contains("text")) {
             return true;
         } else {
             return false;
@@ -91,9 +98,5 @@ public class MessageRendererService extends Service {
         } else {
             return false;
         }
-    }
-
-    private boolean isTextPlain(String contentType) {
-        return contentType.contains("TEXT/PLAIN");
     }
 }

@@ -13,7 +13,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmailSenderService extends Service<EmailSendingResult> {
@@ -36,7 +35,7 @@ public class EmailSenderService extends Service<EmailSendingResult> {
     protected Task<EmailSendingResult> createTask() {
         return new Task<EmailSendingResult>() {
             @Override
-            protected EmailSendingResult call(){
+            protected EmailSendingResult call() {
                 try {
                     //Create the message:
                     MimeMessage mimeMessage = new MimeMessage(emailAccount.getSession());
@@ -50,8 +49,8 @@ public class EmailSenderService extends Service<EmailSendingResult> {
                     multipart.addBodyPart(messageBodyPart);
                     mimeMessage.setContent(multipart);
                     // adding attachments:
-                    if(attachments.size()>0){
-                        for ( File file: attachments){
+                    if (attachments.size() > 0) {
+                        for (File file : attachments) {
                             MimeBodyPart mimeBodyPart = new MimeBodyPart();
                             DataSource source = new FileDataSource(file.getAbsolutePath());
                             mimeBodyPart.setDataHandler(new DataHandler(source));
@@ -72,7 +71,7 @@ public class EmailSenderService extends Service<EmailSendingResult> {
                 } catch (MessagingException e) {
                     e.printStackTrace();
                     return EmailSendingResult.FAILED_BY_PROVIDER;
-                }  catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     return EmailSendingResult.FAILED_BY_UNEXPECTED_ERROR;
                 }

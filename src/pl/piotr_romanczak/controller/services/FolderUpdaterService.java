@@ -19,10 +19,10 @@ public class FolderUpdaterService extends Service {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                for(;;) {
+                for (; ; ) {
                     try {
                         Thread.sleep(5000);
-                        for (Folder folder: folderList) {
+                        for (Folder folder : folderList) {
                             if (folder.getType() != Folder.HOLDS_FOLDERS && folder.isOpen()) {
                                 folder.getMessageCount();
                             }
